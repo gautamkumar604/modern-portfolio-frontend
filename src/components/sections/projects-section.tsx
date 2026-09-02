@@ -8,6 +8,8 @@ import { Project } from '@/types';
 import { SectionHeading } from '../ui/section-heading';
 import { Badge } from '../ui/badge';
 
+import { getImageUrl } from '@/lib/utils/image';
+
 interface ProjectsSectionProps {
   projects: Project[];
 }
@@ -87,7 +89,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
                     <div className="relative w-full aspect-[16/9] bg-[var(--bg-primary)] overflow-hidden">
                       {project.coverImage ? (
                         <img
-                          src={project.coverImage}
+                          src={getImageUrl(project.coverImage)}
                           alt={project.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                         />

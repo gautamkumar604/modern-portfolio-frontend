@@ -6,6 +6,7 @@ import { PageHeader } from '@/components/admin/ui/page-header';
 import { FormField } from '@/components/admin/ui/form-field';
 import { ToastContainer, ToastMessage } from '@/components/admin/ui/toast';
 import { adminProfileService } from '@/lib/services/admin-profile.service';
+import { ImageUpload } from '@/components/admin/ui/image-upload';
 import { Profile } from '@/types';
 
 export default function AdminProfilePage() {
@@ -331,26 +332,22 @@ export default function AdminProfilePage() {
             Media Links (Avatar Photo & Resume PDF)
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Avatar Photo URL">
-              <input
-                type="text"
-                value={formData.avatarUrl || ''}
-                onChange={(e) => setFormData({ ...formData, avatarUrl: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-3 py-2 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-primary)] focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-            </FormField>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <ImageUpload
+              label="Avatar Photo"
+              value={formData.avatarUrl || ''}
+              onChange={(url) => setFormData({ ...formData, avatarUrl: url })}
+              placeholder="https://... or upload photo"
+              accept="image/*"
+            />
 
-            <FormField label="Resume PDF URL">
-              <input
-                type="text"
-                value={formData.resumeUrl || ''}
-                onChange={(e) => setFormData({ ...formData, resumeUrl: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-3 py-2 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-primary)] focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-            </FormField>
+            <ImageUpload
+              label="Resume Document (PDF or Link)"
+              value={formData.resumeUrl || ''}
+              onChange={(url) => setFormData({ ...formData, resumeUrl: url })}
+              placeholder="https://... or upload PDF"
+              accept="application/pdf,image/*"
+            />
           </div>
         </div>
       </form>

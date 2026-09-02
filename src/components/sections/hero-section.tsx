@@ -7,6 +7,7 @@ import { Profile, SocialLink } from '@/types';
 import { HeroStats } from './hero-stats';
 import { SocialLinks } from '../ui/social-links';
 import { AvatarFallback } from '../ui/avatar-fallback';
+import { getImageUrl } from '@/lib/utils/image';
 
 interface HeroSectionProps {
   profile?: Profile | null;
@@ -33,6 +34,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const primaryUrl = profile?.primaryCtaUrl || '#projects';
   const secondaryText = profile?.secondaryCtaText || 'Contact Me';
   const secondaryUrl = profile?.secondaryCtaUrl || '#contact';
+
+  const avatarSrc = getImageUrl(profile?.avatarUrl);
+  const resumeSrc = getImageUrl(profile?.resumeUrl);
 
   return (
     <section id="hero" className="relative pt-10 pb-16 overflow-hidden">
@@ -100,9 +104,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <span>{secondaryText}</span>
               </a>
 
-              {profile?.resumeUrl && (
+              {resumeSrc && (
                 <a
-                  href={profile.resumeUrl}
+                  href={resumeSrc}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-3.5 rounded-xl bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-sm border border-[var(--border-color)] transition"
@@ -123,9 +127,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           >
             <div className="relative w-72 h-72 sm:w-80 sm:h-80 aspect-square rounded-3xl p-2 bg-gradient-to-tr from-blue-500 via-indigo-500 to-pink-500 shadow-2xl shadow-indigo-500/25">
               <div className="w-full h-full rounded-2xl bg-slate-950 overflow-hidden relative">
-                {profile?.avatarUrl ? (
+                {avatarSrc ? (
                   <img
-                    src={profile.avatarUrl}
+                    src={avatarSrc}
                     alt={name}
                     className="w-full h-full object-cover"
                   />

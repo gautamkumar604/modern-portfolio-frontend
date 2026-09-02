@@ -6,6 +6,8 @@ import { Menu, X, Code2, Lock } from 'lucide-react';
 import { ThemeToggle } from '../ui/theme-toggle';
 import { SiteSetting } from '@/types';
 
+import { getImageUrl } from '@/lib/utils/image';
+
 interface NavbarProps {
   siteSettings?: SiteSetting | null;
 }
@@ -66,7 +68,7 @@ export const Navbar: React.FC<NavbarProps> = ({ siteSettings }) => {
         >
           {siteSettings?.logoUrl ? (
             <img
-              src={siteSettings.logoUrl}
+              src={getImageUrl(siteSettings.logoUrl)}
               alt={siteTitle}
               className="w-8 h-8 rounded-lg object-cover"
             />
