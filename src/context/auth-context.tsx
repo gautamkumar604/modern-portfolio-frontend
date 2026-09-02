@@ -28,16 +28,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(userData);
         setIsAuthenticated(true);
       } else {
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('admin_token');
-        }
         setUser(null);
         setIsAuthenticated(false);
       }
     } catch {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('admin_token');
-      }
       setUser(null);
       setIsAuthenticated(false);
     } finally {
@@ -53,9 +47,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true);
     try {
       const res = await adminAuthService.login(email, password);
-      if (res && res.token && typeof window !== 'undefined') {
-        localStorage.setItem('admin_token', res.token);
-      }
       if (res && res.user) {
         setUser(res.user);
         setIsAuthenticated(true);
@@ -74,9 +65,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // Ignore logout errors
     } finally {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('admin_token');
-      }
       setUser(null);
       setIsAuthenticated(false);
       setIsLoading(false);
