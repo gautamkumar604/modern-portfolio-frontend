@@ -1,6 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    const apiBase =
+      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+    const backendHost = apiBase.replace(/\/api\/?$/, '');
+    return [
+      {
+        source: '/uploads/:path*',
+        destination: `${backendHost}/uploads/:path*`,
+      },
+    ];
+  },
   async headers() {
     return [
       {

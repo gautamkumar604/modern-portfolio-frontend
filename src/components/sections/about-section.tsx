@@ -6,6 +6,7 @@ import { MapPin, Mail, Phone, FileText, CheckCircle2, User } from 'lucide-react'
 import { Profile } from '@/types';
 import { SectionHeading } from '../ui/section-heading';
 import { Badge } from '../ui/badge';
+import { getImageUrl } from '@/lib/utils/image';
 
 interface AboutSectionProps {
   profile?: Profile | null;
@@ -24,6 +25,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
   const statusConfig =
     availabilityVariants[profile.availabilityStatus] ||
     availabilityVariants.available;
+
+  const resumeUrl = getImageUrl(profile.resumeUrl);
 
   return (
     <section id="profile" className="py-16 border-t border-[var(--border-color)]">
@@ -46,7 +49,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
           >
             <div className="space-y-3">
               <h3 className="text-xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-500" />
+                <User className="w-5 h-5 text-blue-400" />
                 <span>{profile.name} — {profile.title}</span>
               </h3>
               <p className="text-sm sm:text-base text-[var(--text-primary)] leading-relaxed">
@@ -139,10 +142,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
               </div>
             </div>
 
-            {profile.resumeUrl && (
+            {resumeUrl && (
               <div className="pt-4 border-t border-[var(--border-color)]">
                 <a
-                  href={profile.resumeUrl}
+                  href={resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition shadow-lg shadow-blue-600/20"

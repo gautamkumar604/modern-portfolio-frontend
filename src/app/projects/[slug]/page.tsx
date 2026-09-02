@@ -6,6 +6,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
 import { projectsService } from '@/lib/services/projects.service';
+import { getImageUrl } from '@/lib/utils/image';
 import { siteSettingsService } from '@/lib/services/site-settings.service';
 import { socialLinksService } from '@/lib/services/social-links.service';
 import { ApiError } from '@/lib/api/client';
@@ -171,7 +172,7 @@ export default async function ProjectDetailPage({
           {project.coverImage && (
             <div className="w-full aspect-[16/9] rounded-2xl bg-[var(--bg-primary)] overflow-hidden border border-[var(--border-color)]">
               <img
-                src={project.coverImage}
+                src={getImageUrl(project.coverImage)}
                 alt={project.title}
                 className="w-full h-full object-cover"
               />
@@ -254,7 +255,7 @@ export default async function ProjectDetailPage({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {project.galleryImages.map((imgUrl, idx) => (
                   <div key={idx} className="aspect-[16/9] rounded-xl bg-[var(--bg-primary)] overflow-hidden border border-[var(--border-color)]">
-                    <img src={imgUrl} alt={`${project.title} screenshot ${idx + 1}`} className="w-full h-full object-cover" />
+                    <img src={getImageUrl(imgUrl)} alt={`${project.title} screenshot ${idx + 1}`} className="w-full h-full object-cover" />
                   </div>
                 ))}
               </div>

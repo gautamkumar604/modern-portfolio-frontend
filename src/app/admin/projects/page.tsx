@@ -10,6 +10,7 @@ import { StatusBadge } from '@/components/admin/ui/status-badge';
 import { ConfirmDialog } from '@/components/admin/ui/confirm-dialog';
 import { ToastContainer, ToastMessage } from '@/components/admin/ui/toast';
 import { adminProjectsService } from '@/lib/services/admin-projects.service';
+import { getImageUrl } from '@/lib/utils/image';
 import { Project } from '@/types';
 
 export default function AdminProjectsPage() {
@@ -175,7 +176,7 @@ export default function AdminProjectsPage() {
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-8 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] overflow-hidden shrink-0">
                           {p.coverImage ? (
-                            <img src={p.coverImage} alt={p.title} className="w-full h-full object-cover" />
+                            <img src={getImageUrl(p.coverImage)} alt={p.title} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-blue-400">
                               <FolderGit2 className="w-4 h-4" />
