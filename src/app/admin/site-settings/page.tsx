@@ -7,6 +7,7 @@ import { FormField } from '@/components/admin/ui/form-field';
 import { ConfirmDialog } from '@/components/admin/ui/confirm-dialog';
 import { ToastContainer, ToastMessage } from '@/components/admin/ui/toast';
 import { adminSettingsService } from '@/lib/services/admin-settings.service';
+import { ChangePasswordForm } from '@/components/admin/settings/change-password-form';
 import { SiteSetting } from '@/types';
 
 export default function AdminSiteSettingsPage() {
@@ -293,6 +294,12 @@ export default function AdminSiteSettingsPage() {
           </FormField>
         </div>
       </form>
+
+      {/* Section 5: Change Password Security Component */}
+      <ChangePasswordForm
+        onSuccessToast={(msg) => addToast('success', msg)}
+        onErrorToast={(msg) => addToast('error', msg)}
+      />
     </div>
   );
 }

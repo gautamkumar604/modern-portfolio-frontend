@@ -10,6 +10,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  clearAuthLocally: () => void;
   checkAuth: () => Promise<void>;
 }
 
@@ -20,6 +21,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const clearAuthLocally = useCallback(() => {
+    setUser(null);
+    setIsAuthenticated(false);
+    setIsLoading(false);
+  }, []);
+
   const checkAuth = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -28,16 +35,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(userData);
         setIsAuthenticated(true);
       } else {
-        setUser(null);
-        setIsAuthenticated(false);
+        clearAuthLocally();
       }
     } catch {
-      setUser(null);
-      setIsAuthenticated(false);
+      clearAuthLocally();
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [clearAuthLocally]);
 
   useEffect(() => {
     checkAuth();
@@ -65,9 +70,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // Ignore logout errors
     } finally {
-      setUser(null);
-      setIsAuthenticated(false);
-      setIsLoading(false);
+      clearAuthLocally();
     }
   };
 
@@ -79,6 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isLoading,
         login,
         logout,
+        clearAuthLocally,
         checkAuth,
       }}
     >
