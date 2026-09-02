@@ -47,9 +47,16 @@ async function request<T>(
     }
   }
 
-  const defaultHeaders: HeadersInit = {
+  const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
   };
+
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('admin_token');
+    if (token) {
+      defaultHeaders['Authorization'] = `Bearer ${token}`;
+    }
+  }
 
   const config: RequestInit = {
     ...restOptions,
