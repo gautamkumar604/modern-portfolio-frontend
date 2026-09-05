@@ -27,7 +27,7 @@ function AdminProtectedContent({ children }: { children: React.ReactNode }) {
 
   // Handle Login Page view separately
   if (isLoginPage) {
-    if (isLoading || isAuthenticated) {
+    if (isAuthenticated) {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-[var(--bg-primary)] text-[var(--text-primary)] space-y-4">
           <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />

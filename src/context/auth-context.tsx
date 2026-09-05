@@ -10,6 +10,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  clearAuthLocally: () => void;
   checkAuth: () => Promise<void>;
 }
 
@@ -20,6 +21,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const clearAuthLocally = useCallback(() => {
+    setUser(null);
+    setIsAuthenticated(false);
+    setIsLoading(false);
+  }, []);
+
   const checkAuth = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -28,42 +35,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(userData);
         setIsAuthenticated(true);
       } else {
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('admin_token');
-        }
-        setUser(null);
-        setIsAuthenticated(false);
+        clearAuthLocally();
       }
     } catch {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('admin_token');
-      }
-      setUser(null);
-      setIsAuthenticated(false);
+      clearAuthLocally();
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [clearAuthLocally]);
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      const res = await adminAuthService.login(email, password);
-      if (res && res.token && typeof window !== 'undefined') {
-        localStorage.setItem('admin_token', res.token);
-      }
-      if (res && res.user) {
-        setUser(res.user);
-        setIsAuthenticated(true);
-      } else {
-        await checkAuth();
-      }
-    } finally {
-      setIsLoading(false);
+    const res = await adminAuthService.login(email, password);
+    if (res && res.user) {
+      setUser(res.user);
+      setIsAuthenticated(true);
+    } else {
+      await checkAuth();
     }
   };
 
@@ -74,12 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch {
       // Ignore logout errors
     } finally {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('admin_token');
-      }
-      setUser(null);
-      setIsAuthenticated(false);
-      setIsLoading(false);
+      clearAuthLocally();
     }
   };
 
@@ -91,6 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isLoading,
         login,
         logout,
+        clearAuthLocally,
         checkAuth,
       }}
     >
