@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Cpu } from 'lucide-react';
+import { Cpu, ChevronDown } from 'lucide-react';
 import { Skill } from '@/types';
 import { SectionHeading } from '../ui/section-heading';
 import { renderIcon } from '@/lib/utils/icon-mapper';
@@ -13,8 +13,10 @@ interface SkillsSectionProps {
 
 export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [showAll, setShowAll] = useState<boolean>(false);
 
   const isEmpty = !skills || skills.length === 0;
+  const INITIAL_LIMIT = 6;
 
   // Extract unique categories dynamically
   const categories = isEmpty
@@ -26,6 +28,8 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
     : selectedCategory === 'All'
     ? skills
     : skills.filter((s) => s.category.toLowerCase() === selectedCategory.toLowerCase());
+
+  const visibleSkills = showAll ? filteredSkills : filteredSkills.slice(0, INITIAL_LIMIT);
 
   return (
     <section id="skills" className="py-16 border-t border-[var(--border-color)]">
@@ -70,7 +74,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
 
             {/* Skills Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredSkills.map((skill, index) => (
+              {visibleSkills.map((skill, index) => (
                 <motion.div
                   key={skill._id || skill.name}
                   initial={{ opacity: 0, y: 15 }}
@@ -81,7 +85,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
                 >
                   <div className="flex items-center justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="p-2.5 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-blue-400 group-hover:text-blue-300 transition">
+                      <div className="p-2.5 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-blue-600 dark:text-blue-400 group-hover:text-blue-500 dark:group-hover:text-blue-300 transition">
                         {renderIcon(skill.icon || skill.name, 'w-5 h-5')}
                       </div>
                       <div>
@@ -91,14 +95,14 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
                     </div>
 
                     {skill.proficiency !== undefined && (
-                      <span className="text-xs font-mono font-semibold text-blue-400">
+                      <span className="text-xs font-mono font-semibold text-blue-600 dark:text-blue-400">
                         {skill.proficiency}%
                       </span>
                     )}
                   </div>
 
                   {skill.description && (
-                    <p className="text-xs text-[var(--text-secondary)] mb-3">{skill.description}</p>
+                    <p className="text-xs text-[var(--text-secondary)] mb-3 leading-relaxed">{skill.description}</p>
                   )}
 
                   {/* Animated Progress Bar */}
@@ -113,6 +117,19 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
                 </motion.div>
               ))}
             </div>
+
+            {/* View More Skills Button */}
+            {filteredSkills.length > INITIAL_LIMIT && (
+              <div className="mt-10 text-center">
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] font-semibold text-xs border border-[var(--border-color)] transition shadow-md hover:border-blue-500/50"
+                >
+                  <span>{showAll ? 'Show Fewer Skills' : `View All Skills (${filteredSkills.length})`}</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

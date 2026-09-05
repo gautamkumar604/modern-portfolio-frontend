@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ExternalLink, ArrowRight, Sparkles, FolderGit2, Code2 } from 'lucide-react';
+import { ExternalLink, ArrowRight, Sparkles, FolderGit2, Code2, ChevronDown } from 'lucide-react';
 import { Project } from '@/types';
 import { SectionHeading } from '../ui/section-heading';
 import { Badge } from '../ui/badge';
@@ -16,8 +16,10 @@ interface ProjectsSectionProps {
 
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) => {
   const [filterType, setFilterType] = useState<string>('All');
+  const [showAll, setShowAll] = useState<boolean>(false);
 
   const isEmpty = !projects || projects.length === 0;
+  const INITIAL_LIMIT = 6;
 
   // Dynamically derive unique projectType string values from returned projects.data
   const projectTypes = isEmpty
@@ -29,6 +31,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
     : filterType === 'All'
     ? projects
     : projects.filter((p) => p.projectType.toLowerCase() === filterType.toLowerCase());
+
+  const visibleProjects = showAll ? filteredProjects : filteredProjects.slice(0, INITIAL_LIMIT);
 
   return (
     <section id="projects" className="py-16 border-t border-[var(--border-color)]">
@@ -42,7 +46,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
 
         {isEmpty ? (
           <div className="p-8 rounded-2xl card-surface text-center space-y-3 max-w-md mx-auto my-6">
-            <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-indigo-400 w-fit mx-auto">
+            <div className="p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-indigo-500 w-fit mx-auto">
               <FolderGit2 className="w-6 h-6" />
             </div>
             <h4 className="font-bold text-sm text-[var(--text-primary)]">Projects Coming Soon</h4>
@@ -58,7 +62,10 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
                 {projectTypes.map((type) => (
                   <button
                     key={type}
-                    onClick={() => setFilterType(type)}
+                    onClick={() => {
+                      setFilterType(type);
+                      setShowAll(false);
+                    }}
                     className={`px-4 py-2 rounded-xl text-xs font-semibold capitalize font-mono transition ${
                       filterType === type
                         ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/20'
@@ -73,13 +80,13 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
 
             {/* Projects Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProjects.map((project, index) => (
+              {visibleProjects.map((project, index) => (
                 <motion.div
                   key={project._id || project.slug}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
                   className={`rounded-2xl card-surface overflow-hidden flex flex-col justify-between hover:border-blue-500/50 transition group ${
                     project.isFeatured ? 'ring-1 ring-blue-500/40 shadow-lg shadow-blue-500/10' : ''
                   }`}
@@ -115,7 +122,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
 
                     {/* Card Content */}
                     <div className="p-6 space-y-3">
-                      <h3 className="text-xl font-bold text-[var(--text-primary)] group-hover:text-blue-400 transition">
+                      <h3 className="text-xl font-bold text-[var(--text-primary)] group-hover:text-blue-500 dark:group-hover:text-blue-400 transition">
                         <Link href={`/projects/${project.slug}`}>{project.title}</Link>
                       </h3>
 
@@ -143,7 +150,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
                   <div className="p-6 pt-0 mt-4 flex items-center justify-between border-t border-[var(--border-color)] pt-4 text-xs font-semibold">
                     <Link
                       href={`/projects/${project.slug}`}
-                      className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 transition"
+                      className="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition"
                     >
                       <span>View Details</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -166,7 +173,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
                           href={project.liveDemoUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="p-1.5 rounded-lg bg-blue-600/20 text-blue-400 hover:text-white border border-blue-500/30 transition"
+                          className="p-1.5 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 hover:text-white border border-blue-500/30 transition"
                           title="Live Demo"
                         >
                           <ExternalLink className="w-4 h-4" />
@@ -177,6 +184,19 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
                 </motion.div>
               ))}
             </div>
+
+            {/* View More Projects Button */}
+            {filteredProjects.length > INITIAL_LIMIT && (
+              <div className="mt-10 text-center">
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] font-semibold text-xs border border-[var(--border-color)] transition shadow-md hover:border-blue-500/50"
+                >
+                  <span>{showAll ? 'Show Fewer Projects' : `View All Projects (${filteredProjects.length})`}</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

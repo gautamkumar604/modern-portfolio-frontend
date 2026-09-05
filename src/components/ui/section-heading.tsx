@@ -32,7 +32,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
 
       <div className="relative z-10 space-y-2">
         {badgeText && (
-          <span className="inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-950/40 rounded-full border border-blue-800/40 font-mono">
+          <span className="inline-block px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-500/10 dark:bg-blue-950/40 rounded-full border border-blue-500/25 dark:border-blue-800/40 font-mono">
             {badgeText}
           </span>
         )}
