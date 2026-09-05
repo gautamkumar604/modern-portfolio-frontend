@@ -49,7 +49,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
           >
             <div className="space-y-3">
               <h3 className="text-xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-                <User className="w-5 h-5 text-blue-400" />
+                <User className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 <span>{profile.name} — {profile.title}</span>
               </h3>
               <p className="text-sm sm:text-base text-[var(--text-primary)] leading-relaxed">
@@ -80,7 +80,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
                       key={idx}
                       className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs font-medium text-[var(--text-primary)]"
                     >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                       <span>{highlight}</span>
                     </div>
                   ))}
@@ -103,7 +103,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
 
             <div className="space-y-4 text-xs sm:text-sm text-[var(--text-primary)]">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-[var(--bg-primary)] text-blue-400 border border-[var(--border-color)]">
+                <div className="p-2 rounded-lg bg-[var(--bg-primary)] text-blue-600 dark:text-blue-400 border border-[var(--border-color)]">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
@@ -113,12 +113,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-[var(--bg-primary)] text-indigo-400 border border-[var(--border-color)]">
+                <div className="p-2 rounded-lg bg-[var(--bg-primary)] text-indigo-600 dark:text-indigo-400 border border-[var(--border-color)]">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <p className="text-[11px] text-[var(--text-secondary)] uppercase font-mono">Email</p>
-                  <a href={`mailto:${profile.email}`} className="font-semibold text-blue-400 hover:underline">
+                  <a href={`mailto:${profile.email}`} className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
                     {profile.email}
                   </a>
                 </div>
@@ -126,7 +126,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ profile }) => {
 
               {profile.phone && (
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-[var(--bg-primary)] text-purple-400 border border-[var(--border-color)]">
+                  <div className="p-2 rounded-lg bg-[var(--bg-primary)] text-purple-600 dark:text-purple-400 border border-[var(--border-color)]">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>

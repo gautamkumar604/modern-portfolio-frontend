@@ -39,7 +39,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const resumeSrc = getImageUrl(profile?.resumeUrl);
 
   return (
-    <section id="hero" className="relative pt-10 pb-16 overflow-hidden">
+    <section id="hero" className="relative pt-20 pb-16 overflow-hidden">
       {/* Ambient Background Radial Glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-gradient-to-tr from-blue-600/15 via-indigo-600/15 to-pink-600/15 rounded-full blur-3xl pointer-events-none -z-10" />
 
@@ -53,7 +53,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             className="lg:col-span-7 space-y-6 text-left"
           >
             {/* Greeting Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-800/40 text-blue-400 text-xs font-semibold">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5" />
               <span>{greeting}</span>
             </div>
@@ -63,19 +63,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
                 <span className="gradient-text gradient-glow">{name}</span>
               </h1>
-              <h2 className="text-xl sm:text-3xl font-bold text-slate-300 dark:text-slate-300 text-slate-700">
+              <h2 className="text-xl sm:text-3xl font-bold text-[var(--text-primary)] opacity-90">
                 {title}
               </h2>
             </div>
 
             {headline && (
-              <p className="text-sm sm:text-base text-slate-300 dark:text-slate-300 text-slate-700 leading-relaxed max-w-2xl">
+              <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed max-w-2xl font-medium">
                 {headline}
               </p>
             )}
 
             {subtitle && (
-              <p className="text-xs sm:text-sm text-slate-400 font-mono">
+              <p className="text-xs sm:text-sm text-[var(--text-secondary)] opacity-80 font-mono">
                 {subtitle}
               </p>
             )}
@@ -118,26 +118,56 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </motion.div>
 
-          {/* Right Column — Profile Avatar Frame / Fallback (Aspect Square) */}
+          {/* Right Column — Profile Avatar Frame with Floating & Pulse Glow Animations */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-5 flex justify-center"
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="lg:col-span-5 flex justify-center relative"
           >
-            <div className="relative w-72 h-72 sm:w-80 sm:h-80 aspect-square rounded-3xl p-2 bg-gradient-to-tr from-blue-500 via-indigo-500 to-pink-500 shadow-2xl shadow-indigo-500/25">
-              <div className="w-full h-full rounded-2xl bg-slate-950 overflow-hidden relative">
+            {/* Animated Rotating & Pulsing Background Aura */}
+            <motion.div
+              animate={{
+                scale: [1, 1.08, 1],
+                opacity: [0.35, 0.65, 0.35],
+                rotate: [0, 180, 360],
+              }}
+              transition={{
+                duration: 14,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+              className="absolute inset-0 max-w-xs sm:max-w-sm mx-auto rounded-3xl bg-gradient-to-tr from-blue-500 via-indigo-500 to-pink-500 blur-2xl opacity-40 -z-10"
+            />
+
+            {/* Continuous Floating Main Avatar Container */}
+            <motion.div
+              animate={{
+                y: [0, -12, 0],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                repeatType: 'mirror',
+                ease: 'easeInOut',
+              }}
+              whileHover={{ scale: 1.03, rotate: 1 }}
+              className="relative w-72 h-72 sm:w-80 sm:h-80 aspect-square rounded-3xl p-[3px] bg-gradient-to-tr from-blue-500 via-indigo-500 to-pink-500 shadow-2xl shadow-indigo-500/30 group cursor-pointer"
+            >
+              <div className="w-full h-full rounded-[22px] bg-[var(--bg-primary)] overflow-hidden relative">
                 {avatarSrc ? (
                   <img
                     src={avatarSrc}
                     alt={name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-out"
                   />
                 ) : (
                   <AvatarFallback title={title} />
                 )}
+                {/* Subtle Hover Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500 pointer-events-none" />
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 
