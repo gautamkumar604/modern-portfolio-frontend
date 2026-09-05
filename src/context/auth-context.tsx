@@ -22,6 +22,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const clearAuthLocally = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('admin_token');
+    }
     setUser(null);
     setIsAuthenticated(false);
     setIsLoading(false);
@@ -50,6 +53,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     const res = await adminAuthService.login(email, password);
+    if (res && res.token && typeof window !== 'undefined') {
+      localStorage.setItem('admin_token', res.token);
+    }
     if (res && res.user) {
       setUser(res.user);
       setIsAuthenticated(true);
