@@ -49,17 +49,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [checkAuth]);
 
   const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      const res = await adminAuthService.login(email, password);
-      if (res && res.user) {
-        setUser(res.user);
-        setIsAuthenticated(true);
-      } else {
-        await checkAuth();
-      }
-    } finally {
-      setIsLoading(false);
+    const res = await adminAuthService.login(email, password);
+    if (res && res.user) {
+      setUser(res.user);
+      setIsAuthenticated(true);
+    } else {
+      await checkAuth();
     }
   };
 

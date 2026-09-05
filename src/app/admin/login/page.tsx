@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, Lock, Mail, AlertTriangle, ArrowRight, Code2 } from 'lucide-react';
+import { ShieldCheck, Lock, Mail, AlertTriangle, ArrowRight, Code2, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
 import { ApiError } from '@/lib/api/client';
 
@@ -12,6 +12,7 @@ export default function AdminLoginPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -24,10 +25,10 @@ export default function AdminLoginPage() {
       await login(email, password);
       router.replace('/admin/dashboard');
     } catch (err: any) {
-      if (err instanceof ApiError && err.statusCode === 429) {
+      if (err?.statusCode === 429) {
         setErrorMessage('Too many login attempts. Please wait 60 seconds before trying again.');
       } else {
-        setErrorMessage(err.message || 'Invalid email or password.');
+        setErrorMessage(err?.message || 'Invalid email or password.');
       }
     } finally {
       setIsSubmitting(false);
@@ -82,15 +83,23 @@ export default function AdminLoginPage() {
               Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
+              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] pointer-events-none" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs sm:text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="w-full pl-10 pr-12 py-2.5 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs sm:text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-1 top-1 bottom-1 px-3 flex items-center justify-center text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
