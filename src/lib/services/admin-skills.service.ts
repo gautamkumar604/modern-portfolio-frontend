@@ -15,13 +15,19 @@ export const adminSkillsService = {
   },
 
   createSkill: async (dto: Partial<Skill>): Promise<Skill> => {
-    return apiClient.post<Skill>('/admin/skills', dto, {
+    const { _id, createdAt, updatedAt, __v, ...cleanDto } = dto as any;
+    if (cleanDto.proficiency !== undefined) cleanDto.proficiency = Number(cleanDto.proficiency);
+    if (cleanDto.displayOrder !== undefined) cleanDto.displayOrder = Number(cleanDto.displayOrder);
+    return apiClient.post<Skill>('/admin/skills', cleanDto, {
       withCredentials: true,
     });
   },
 
   updateSkill: async (id: string, dto: Partial<Skill>): Promise<Skill> => {
-    return apiClient.patch<Skill>(`/admin/skills/${id}`, dto, {
+    const { _id, createdAt, updatedAt, __v, ...cleanDto } = dto as any;
+    if (cleanDto.proficiency !== undefined) cleanDto.proficiency = Number(cleanDto.proficiency);
+    if (cleanDto.displayOrder !== undefined) cleanDto.displayOrder = Number(cleanDto.displayOrder);
+    return apiClient.patch<Skill>(`/admin/skills/${id}`, cleanDto, {
       withCredentials: true,
     });
   },
