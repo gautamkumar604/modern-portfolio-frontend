@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
+import { ProjectCardImage } from '@/components/ui/project-card-image';
 import { projectsService } from '@/lib/services/projects.service';
 import { getImageUrl } from '@/lib/utils/image';
 import { siteSettingsService } from '@/lib/services/site-settings.service';
@@ -169,15 +170,14 @@ export default async function ProjectDetailPage({
           </div>
 
           {/* Cover Image — Fixed Aspect Ratio Container to Eliminate CLS */}
-          {project.coverImage && (
-            <div className="w-full aspect-[16/9] rounded-2xl bg-[var(--bg-primary)] overflow-hidden border border-[var(--border-color)]">
-              <img
-                src={getImageUrl(project.coverImage)}
-                alt={project.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
+          <div className="w-full aspect-[16/9] rounded-2xl bg-[var(--bg-primary)] overflow-hidden border border-[var(--border-color)]">
+            <ProjectCardImage
+              src={project.coverImage}
+              alt={project.title}
+              projectType={project.projectType}
+              className="w-full h-full object-cover"
+            />
+          </div>
 
           {/* Detailed Description */}
           {project.detailedDescription && (

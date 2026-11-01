@@ -174,13 +174,19 @@ export default function AdminProjectsPage() {
                   <tr key={p._id} className="hover:bg-[var(--bg-surface-hover)] transition">
                     <td className="py-3 px-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-8 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] overflow-hidden shrink-0">
+                        <div className="w-12 h-8 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] overflow-hidden shrink-0 flex items-center justify-center">
                           {p.coverImage ? (
-                            <img src={getImageUrl(p.coverImage)} alt={p.title} className="w-full h-full object-cover" />
+                            <img
+                              src={getImageUrl(p.coverImage)}
+                              alt={p.title}
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                              className="w-full h-full object-cover"
+                            />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-blue-400">
-                              <FolderGit2 className="w-4 h-4" />
-                            </div>
+                            <FolderGit2 className="w-4 h-4 text-blue-400" />
                           )}
                         </div>
                         <div className="min-w-0">

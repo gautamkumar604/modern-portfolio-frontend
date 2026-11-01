@@ -7,8 +7,7 @@ import { ExternalLink, ArrowRight, Sparkles, FolderGit2, Code2, ChevronDown } fr
 import { Project } from '@/types';
 import { SectionHeading } from '../ui/section-heading';
 import { Badge } from '../ui/badge';
-
-import { getImageUrl } from '@/lib/utils/image';
+import { ProjectCardImage } from '../ui/project-card-image';
 
 interface ProjectsSectionProps {
   projects: Project[];
@@ -94,18 +93,11 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projects }) =>
                   <div className="space-y-4">
                     {/* Fixed Aspect Ratio Container to Minimize CLS */}
                     <div className="relative w-full aspect-[16/9] bg-[var(--bg-primary)] overflow-hidden">
-                      {project.coverImage ? (
-                        <img
-                          src={getImageUrl(project.coverImage)}
-                          alt={project.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-[var(--text-secondary)] p-4">
-                          <FolderGit2 className="w-12 h-12 mb-2 text-blue-500/40" />
-                          <span className="text-xs font-mono">{project.projectType} project</span>
-                        </div>
-                      )}
+                      <ProjectCardImage
+                        src={project.coverImage}
+                        alt={project.title}
+                        projectType={project.projectType}
+                      />
 
                       <div className="absolute top-3 left-3 flex gap-2">
                         <Badge variant="info" className="capitalize">
