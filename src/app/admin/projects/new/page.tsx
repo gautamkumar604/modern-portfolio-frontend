@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Save, Sparkles } from 'lucide-react';
 import { PageHeader } from '@/components/admin/ui/page-header';
 import { FormField } from '@/components/admin/ui/form-field';
+import { ImageUpload } from '@/components/admin/ui/image-upload';
 import { ToastContainer, ToastMessage } from '@/components/admin/ui/toast';
 import { adminProjectsService } from '@/lib/services/admin-projects.service';
 import { Project } from '@/types';
@@ -189,17 +190,17 @@ export default function NewProjectPage() {
             Cover Image & Repository Links
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <FormField label="Cover Image URL">
-              <input
-                type="text"
-                value={formData.coverImage || ''}
-                onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
-                placeholder="https://..."
-                className="w-full px-3 py-2 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-primary)] outline-none"
-              />
-            </FormField>
+          {/* Cover Image Upload (From Storage or by URL) */}
+          <ImageUpload
+            label="Project Cover Image (Banner)"
+            value={formData.coverImage || ''}
+            onChange={(url) => setFormData({ ...formData, coverImage: url })}
+            placeholder="https://images.unsplash.com/... or upload from storage"
+            aspectRatio="video"
+            helpText="Upload from device storage or paste an image URL (16:9 recommended)"
+          />
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="GitHub Repository URL">
               <input
                 type="text"
